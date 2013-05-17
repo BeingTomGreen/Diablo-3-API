@@ -60,7 +60,18 @@ class D3 {
 		}
 	}
 
-	// TODO - Refactor to use ternery operator (smaller code footprint)
+	/**
+		* validBattleTag
+		*
+		* Checks that a supplied BattleTag is valid - according to https://us.battle.net/support/en/article/BattleTagNamingPolicy
+		*
+		* @todo Refactor to use ternery operator (smaller code footprint)
+		*
+		* @param string $battleTag - The users Battle Tag
+		*
+		* @return bool - is the BattleTag valid or not
+		*
+		*/
 	private function validBattleTag ($battleTag)
 	{
 		// Now check it is valid
