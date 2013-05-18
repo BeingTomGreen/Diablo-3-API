@@ -41,22 +41,26 @@ class D3 {
 		}
 
 		// Have we been passed a valid Protocol
-		if (isset($args['protocol']) and $args['protocol'] != '' and in_array($args['protocol'], $this->possibleProtocols))
+		if (isset($args['protocol']) and in_array($args['protocol'], $this->possibleProtocols))
 		{
 			$this->protocol = $args['protocol'];
 		}
 
 		// Have we been passed a valid Server
-		if (isset($args['server']) and $args['server'] != '' and in_array($args['server'], $this->possibleServers))
+		if (isset($args['server']) and in_array($args['server'], $this->possibleServers))
 		{
 			$this->server = $args['server'];
 		}
 
 		// Have we been passed a valid Locale
-		if (isset($args['locale']) and $args['locale'] != '' and in_array($args['locale'], $this->possibleLocale))
+		if (isset($args['locale']) and in_array($args['locale'], $this->possibleLocale))
 		{
 			$this->locale = $args['locale'];
 		}
+
+		echo $this->protocol .'<br />';
+		echo $this->server .'<br />';
+		echo $this->locale .'<br />';
 	}
 
 	/**
