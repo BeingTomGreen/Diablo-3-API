@@ -158,29 +158,18 @@ class D3 {
 		*
 		* Checks that we have all of the required CURL functions
 		*
-		* @todo Refactor to use ternery operator (smaller code footprint)
-		*
 		* @return bool - do we have all of the CURL functions?
 		*
 		*/
 		public function checkCURL()
 		{
-			if(!function_exists("curl_init") or !function_exists("curl_setopt") or !function_exists("curl_exec") or !function_exists("curl_close"))
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
+			return function_exists("curl_init") and function_exists("curl_setopt") and function_exists("curl_exec") and function_exists("curl_close") ? true : false;
 		}
 
 	/**
 		* validBattleTag
 		*
 		* Checks that a supplied BattleTag is valid - according to https://us.battle.net/support/en/article/BattleTagNamingPolicy
-		*
-		* @todo Refactor to use ternery operator (smaller code footprint)
 		*
 		* @param string $battleTag - The users Battle Tag
 		*
@@ -189,15 +178,7 @@ class D3 {
 		*/
 	private function validBattleTag ($battleTag)
 	{
-		// Now check it is valid
-		if (preg_match($this->battleTagPattern, $battleTag))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return preg_match($this->battleTagPattern, $battleTag) ? true : false;
 	}
 }
 
