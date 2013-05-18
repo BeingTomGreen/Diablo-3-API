@@ -8,3 +8,6 @@ I may very well create my own Docs repo and stick it on github.io to help others
 
 ## TODO
 Support authenticated API Calls - I know this is possible, but am currently unsure how Blizzard gives Auth Keys.
+
+## License
+This is free and unencumbered software released into the public domain. See UNLICENSE for more details.
