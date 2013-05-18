@@ -14,7 +14,6 @@ class D3 {
 	private $possibleProtocols = ['http://', 'https://'];
 	private $possibleServers = ['us', 'eu', 'tw', 'kr', 'cn'];
 	private $possibleLocale = ['en_US', 'en_GB', 'es_MX', 'es_ES', 'it_IT', 'pt_PT', 'pt_BR', 'fr_FR', 'ru_RU', 'pl_PL', 'de_DE', 'ko_KR', 'zh_TW', 'zh_CN'];
-	private $possibleErrors = ['OOPS', 'LIMITED', 'MAINTENANCE', 'NOTFOUND'];
 
 	// Regular Expression to match Valid BattleTags
 	// TODO - Refactor - this is taken from a random GitHub Repo (https://github.com/XjSv/Diablo-3-API-PHP/blob/master/diablo3.api.class.php)!
@@ -89,8 +88,6 @@ class D3 {
 			error_log('BattleTag provided not valid. ('. $battleTag .')');
 			return false;
 		}
-
-
 	}
 
 	/**
@@ -136,7 +133,7 @@ class D3 {
 			$data = json_decode($data, true);
 
 			// Check we don't have an error code
-			if (isset($data['code']) and in_array($data['code'], $this->possibleErrors))
+			if (isset($data['code']) and isset($data['reason']))
 			{
 				// API error lets make a note of this then return false
 				error_log('API error: '. $data['code'] .' - '. $data['reason'] .' ('. $url .')!');
