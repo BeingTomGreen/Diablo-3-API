@@ -10,6 +10,15 @@ class D3 {
 	private $host = '.battle.net/api/d3/';
 	private $locale = 'en_GB';
 
+	// Variables to hold the various built API URLs
+	private $careerURL;
+	private $heroURL;
+	private $itemURL;
+	private $followerURL;
+	private $artisanURL;
+	private $skillURL;
+	private $paperDollURL;
+
 	// These hold all of the possible Protocols, Servers & Locals
 	private $possibleProtocols = ['http://', 'https://'];
 	private $possibleServers = ['us', 'eu', 'tw', 'kr', 'cn'];
@@ -58,9 +67,8 @@ class D3 {
 			$this->locale = $args['locale'];
 		}
 
-		echo $this->protocol .'<br />';
-		echo $this->server .'<br />';
-		echo $this->locale .'<br />';
+		// Finally lets build the various API URLs
+		$this->buildAPIURLs();
 	}
 
 	/**
@@ -81,10 +89,8 @@ class D3 {
 		// Validate that we have a valid Battle Tag
 		if ($this->validBattleTag($this->battleTag) == true)
 		{
-			// Build the API URL
-			$url = $this->protocol . $this->server . $this->host .'profile/'. $this->battleTag .'/?locale='.$this->locale;
-
-			return $this->makeCURLCall($url);
+			// Grab the Career data
+			return $this->makeCURLCall($this->careerURL);
 		}
 		// BattleTag error lets make a note of this then return false
 		else
@@ -106,6 +112,7 @@ class D3 {
 		*/
 	private function makeCURLCall($url)
 	{
+		echo $url;
 		// Initialise CURL
 		$handle = curl_init();
 
@@ -156,6 +163,28 @@ class D3 {
 			return false;
 		}
 	}
+
+	/**
+		* buildAPIURLs
+		*
+		* Builds the various API URLs based on provided information
+		*
+		*/
+		private function buildAPIURLs()
+		{
+			// Lets build the main part of the URL to save us repeating it
+			$url = $this->protocol . $this->server . $this->host;
+
+			// Now lets build the URLs which don't require a BattleTag
+			$this->itemURL = $url .'data/?locale='. $this->locale;
+			$this->followerURL = $url .'data/follower/?locale='. $this->locale;
+			$this->artisanURL = $url .'data/artisan/?locale='. $this->locale;
+
+			if ($this->battleTag != '')
+			{
+				$this->careerURL = $url .'profile/'. $this->battleTag .'/?locale='. $this->locale;
+			}
+		}
 
 	/**
 		* checkCURL
