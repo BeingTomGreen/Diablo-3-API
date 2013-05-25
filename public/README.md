@@ -8,7 +8,8 @@ I may very well create my own Docs repo and stick it on github.io to help others
 
 ## TODO
 Support authenticated API Calls - Same syntax as the WOW API, need to manually email support and get an application key.
-Pass BattleTag to the __construct method?
+~~Pass BattleTag to the __construct method?~~
+Since we are limited to 10k or 50k (if authenticated) calls, it may make sense to cache the results.
 
 ## License
 This is free and unencumbered software released into the public domain. See UNLICENSE for more details.
