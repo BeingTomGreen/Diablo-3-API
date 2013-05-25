@@ -67,6 +67,25 @@ class D3 {
 			$this->locale = $args['locale'];
 		}
 
+		// Have we been passed a Battle Tag
+		if (isset($args['battleTag']) && $args['battleTag'] != '')
+		{
+			// Replace '#' with '-' as some users may enter it with '#'
+			$args['battleTag'] = str_replace('#', '-', $args['battleTag']);
+
+			// Validate that we have a valid Battle Tag
+			if ($this->validBattleTag($args['battleTag']) == true)
+			{
+				// Battle Tag is valid, lets save it for later
+				$this->battleTag = $args['battleTag'];
+			}
+			// BattleTag error lets make a note of this then return false
+			else
+			{
+				error_log('BattleTag provided not valid. ('. $battleTag .')');
+				return false;
+			}
+		}
 		// Finally lets build the various API URLs
 		$this->buildAPIURLs();
 	}
@@ -76,26 +95,21 @@ class D3 {
 		*
 		* Returns the Career data
 		*
-		* @param string $battleTag - The users Battle Tag (https://us.battle.net/support/en/article/BattleTagNamingPolicy)
-		*
 		* @return array/bool - data if we have it, otherwise false
 		*
 		*/
-	public function getCareer($battleTag)
+	public function getCareer()
 	{
-		// Replace '#' with '-' as some users may enter it with '#'
-		$this->battleTag = str_replace('#', '-', $battleTag);
-
-		// Validate that we have a valid Battle Tag
-		if ($this->validBattleTag($this->battleTag) == true)
+		// Check that we have the Career URL (since we need a Battle Tag)
+		if ($this->careerURL != '')
 		{
 			// Grab the Career data
 			return $this->makeCURLCall($this->careerURL);
 		}
-		// BattleTag error lets make a note of this then return false
+		// No URL lets make a note of this then return false
 		else
 		{
-			error_log('BattleTag provided not valid. ('. $battleTag .')');
+			error_log('No Career URL, prehaps you didn\' specify a Battle Tag');
 			return false;
 		}
 	}
@@ -112,7 +126,6 @@ class D3 {
 		*/
 	private function makeCURLCall($url)
 	{
-		echo $url;
 		// Initialise CURL
 		$handle = curl_init();
 
@@ -180,6 +193,7 @@ class D3 {
 			$this->followerURL = $url .'data/follower/?locale='. $this->locale;
 			$this->artisanURL = $url .'data/artisan/?locale='. $this->locale;
 
+			// Check if we have a Battle Tag (for URLs which require it)
 			if ($this->battleTag != '')
 			{
 				$this->careerURL = $url .'profile/'. $this->battleTag .'/?locale='. $this->locale;
