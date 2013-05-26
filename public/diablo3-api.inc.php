@@ -11,7 +11,8 @@ class D3 {
 	private $locale = 'en_GB';
 
 	// Variables to hold the various built API URLs
-	private $careerURL;
+	private $careerURL; // <host> "/api/d3/profile/" <battletag-name> "-" <battletag-code> "/"
+	private $heroURL; // <host> "/api/d3/profile/" <battletag-name> "-" <battletag-code> "/hero/" <hero-id>
 
 	// These hold all of the possible Protocols, Servers & Locals
 	private $possibleProtocols = ['http://', 'https://'];
@@ -98,6 +99,36 @@ class D3 {
 	}
 
 	/**
+		* getHero
+		*
+		* Returns the Hero data
+		*+
+		* @return array/bool - data if we have it, otherwise false
+		*
+		*/
+	public function getHero($battleTag, $heroID)
+	{
+		// Replace '#' with '-' as some users may enter it with '#'
+		$battleTag = str_replace('#', '-', $battleTag);
+
+		// Validate that we have a valid Battle Tag
+		if ($this->validBattleTag($battleTag) == true and $this->validHeroID($heroID) == true)
+		{
+			// Prepare the URL
+			$url = sprintf($this->heroURL, $battleTag, $heroID);
+
+			// Grab the Career data
+			return $this->makeCURLCall($url);
+		}
+		// BattleTag error lets make a note of this then return false
+		else
+		{
+			error_log('HeroID or BattleTag provided not valid. ('. $heroID .')');
+			return false;
+		}
+	}
+
+	/**
 		* makeCURLCall
 		*
 		* Makes the specified CURL request - this is the meat of the class!
@@ -168,11 +199,12 @@ class D3 {
 		*/
 		private function buildAPIURLs()
 		{
-			// Lets build the main part of the URL to save us repeating it
+			// Lets build the main part of the URL to save us repeating ourselves
 			$url = $this->protocol . $this->server . $this->host;
 
-			// Now lets build the URLs which don't require a BattleTag
+			// Now lets build the API URLs
 			$this->careerURL = $url .'profile/%s/?locale='. $this->locale;
+			$this->heroURL = $url .'profile/%s/hero/%d?locale='. $this->locale;
 		}
 
 	/**
