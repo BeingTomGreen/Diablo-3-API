@@ -12,12 +12,6 @@ class D3 {
 
 	// Variables to hold the various built API URLs
 	private $careerURL;
-	private $heroURL;
-	private $itemURL;
-	private $followerURL;
-	private $artisanURL;
-	private $skillURL;
-	private $paperDollURL;
 
 	// These hold all of the possible Protocols, Servers & Locals
 	private $possibleProtocols = ['http://', 'https://'];
@@ -67,25 +61,6 @@ class D3 {
 			$this->locale = $args['locale'];
 		}
 
-		// Have we been passed a Battle Tag
-		if (isset($args['battleTag']) && $args['battleTag'] != '')
-		{
-			// Replace '#' with '-' as some users may enter it with '#'
-			$args['battleTag'] = str_replace('#', '-', $args['battleTag']);
-
-			// Validate that we have a valid Battle Tag
-			if ($this->validBattleTag($args['battleTag']) == true)
-			{
-				// Battle Tag is valid, lets save it for later
-				$this->battleTag = $args['battleTag'];
-			}
-			// BattleTag error lets make a note of this then return false
-			else
-			{
-				error_log('BattleTag provided not valid. ('. $battleTag .')');
-				return false;
-			}
-		}
 		// Finally lets build the various API URLs
 		$this->buildAPIURLs();
 	}
@@ -98,18 +73,25 @@ class D3 {
 		* @return array/bool - data if we have it, otherwise false
 		*
 		*/
-	public function getCareer()
+	public function getCareer($battleTag)
 	{
-		// Check that we have the Career URL (since we need a Battle Tag)
-		if ($this->careerURL != '')
+		// Replace '#' with '-' as some users may enter it with '#'
+		$battleTag = str_replace('#', '-', $battleTag);
+
+		// Validate that we have a valid Battle Tag
+		if ($this->validBattleTag($battleTag) == true)
 		{
+			// Prepare the URL
+			$url = sprintf($this->careerURL, $battleTag);
+
 			// Grab the Career data
-			return $this->makeCURLCall($this->careerURL);
+			return $this->makeCURLCall($url);
 		}
-		// No URL lets make a note of this then return false
+		// BattleTag error lets make a note of this then return false
 		else
 		{
-			error_log('No Career URL, prehaps you didn\' specify a Battle Tag');
+			echo 'not valid';
+			error_log('BattleTag provided not valid. ('. $battleTag .')');
 			return false;
 		}
 	}
@@ -189,15 +171,7 @@ class D3 {
 			$url = $this->protocol . $this->server . $this->host;
 
 			// Now lets build the URLs which don't require a BattleTag
-			$this->itemURL = $url .'data/?locale='. $this->locale;
-			$this->followerURL = $url .'data/follower/?locale='. $this->locale;
-			$this->artisanURL = $url .'data/artisan/?locale='. $this->locale;
-
-			// Check if we have a Battle Tag (for URLs which require it)
-			if ($this->battleTag != '')
-			{
-				$this->careerURL = $url .'profile/'. $this->battleTag .'/?locale='. $this->locale;
-			}
+			$this->careerURL = $url .'profile/%s/?locale='. $this->locale;
 		}
 
 	/**
