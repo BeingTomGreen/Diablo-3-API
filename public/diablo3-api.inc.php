@@ -123,7 +123,7 @@ class D3 {
 		// BattleTag error lets make a note of this then return false
 		else
 		{
-			error_log('HeroID or BattleTag provided not valid. ('. $heroID .')');
+			error_log('BattleTag or HeroID provided not valid. (BattleTag: '. $battleTag .'HeroID: '. $heroID .')');
 			return false;
 		}
 	}
