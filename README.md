@@ -9,6 +9,7 @@ I may very well create my own Docs repo and stick it on github.io to help others
 ## TODO
 - Support authenticated API Calls - Same syntax as the WOW API, need to manually email support and get an application key.
 - Since we are limited to 10k or 50k (if authenticated) calls, it may make sense to cache the results.
+- Fix Regex's - the battleTagPattern doesn't always work for example xxBTG#2577 seems to be Valid but I don't think it should be.
 
 ## License
 This is free and unencumbered software released into the public domain. See UNLICENSE for more details.
