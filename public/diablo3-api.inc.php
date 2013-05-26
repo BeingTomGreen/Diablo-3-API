@@ -18,9 +18,11 @@ class D3 {
 	private $possibleServers = ['us', 'eu', 'tw', 'kr', 'cn'];
 	private $possibleLocale = ['en_US', 'en_GB', 'es_MX', 'es_ES', 'it_IT', 'pt_PT', 'pt_BR', 'fr_FR', 'ru_RU', 'pl_PL', 'de_DE', 'ko_KR', 'zh_TW', 'zh_CN'];
 
-	// Regular Expression to match Valid BattleTags
-	// TODO - Refactor - this is taken from a random GitHub Repo (https://github.com/XjSv/Diablo-3-API-PHP/blob/master/diablo3.api.class.php)!
+	// Regular Expression
+	// TODO - Refactor - these are taken from a random GitHub Repo
+	// https://github.com/XjSv/Diablo-3-API-PHP/blob/master/diablo3.api.class.php
 	private $battleTagPattern = '/^[\p{L}\p{Mn}][\p{L}\p{Mn}0-9]{2,11}-[0-9]{4,5}+$/u';
+	private $heroIDPattern = '/^[0-9]+$/';
 
 	// These are extra CURL options which users can specify or change
 	private $extraCURLOptions = [
@@ -199,6 +201,21 @@ class D3 {
 	public function validBattleTag ($battleTag)
 	{
 		return preg_match($this->battleTagPattern, $battleTag) ? true : false;
+	}
+
+	/**
+		* validHeroID
+		*
+		* Checks that a supplied Hero ID is valid
+		*
+		* @param string $heroID - The users Hero ID
+		*
+		* @return bool - is the Hero ID valid or not?
+		*
+		*/
+	public function validHeroID ($heroID)
+	{
+		return preg_match($this->heroIDPattern, $heroID) ? true : false;
 	}
 }
 
