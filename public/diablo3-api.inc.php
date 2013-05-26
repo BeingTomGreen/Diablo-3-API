@@ -196,7 +196,7 @@ class D3 {
 		* @return bool - is the BattleTag valid or not?
 		*
 		*/
-	private function validBattleTag ($battleTag)
+	public function validBattleTag ($battleTag)
 	{
 		return preg_match($this->battleTagPattern, $battleTag) ? true : false;
 	}
