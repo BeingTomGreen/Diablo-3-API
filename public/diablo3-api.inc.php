@@ -90,7 +90,6 @@ class D3 {
 		// BattleTag error lets make a note of this then return false
 		else
 		{
-			echo 'not valid';
 			error_log('BattleTag provided not valid. ('. $battleTag .')');
 			return false;
 		}
