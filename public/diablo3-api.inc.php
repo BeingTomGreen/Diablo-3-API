@@ -15,14 +15,16 @@ class D3 {
 	private $heroURL; // <host> "/api/d3/profile/" <battletag-name> "-" <battletag-code> "/hero/" <hero-id>
 	private $itemURL; // <host> "/api/d3/data/item/" <item-data>
 	private $followerURL; // <host> "/api/d3/data/follower/" < follower-type>
+	private $artisanURL; // <host> "/api/d3/data/artisan/" < artisan-type>
 
 	// These hold all of the possible Protocols, Servers & Locals
 	private $possibleProtocols = ['http://', 'https://'];
 	private $possibleServers = ['us', 'eu', 'tw', 'kr', 'cn'];
 	private $possibleLocale = ['en_US', 'en_GB', 'es_MX', 'es_ES', 'it_IT', 'pt_PT', 'pt_BR', 'fr_FR', 'ru_RU', 'pl_PL', 'de_DE', 'ko_KR', 'zh_TW', 'zh_CN'];
 
-	// These hold the Follower types
+	// These hold the Follower and Artisan types
 	private $followerTypes = ['enchantress', 'templar', 'scoundrel'];
+	private $artisanTypes = ['blacksmith', 'jeweler'];
 
 	// Regular Expression
 	// TODO - Refactor - some of these are taken from a random GitHub Repo
@@ -198,6 +200,35 @@ class D3 {
 	}
 
 	/**
+		* getArtisan
+		*
+		* Returns the Artisan data
+		*
+		* @param string $artisanType - the Artisan type
+		*
+		* @return array/bool - data if we have it, otherwise false
+		*
+		*/
+	public function getArtisan($artisanType)
+	{
+		// Validate that we have a valid Artisan type
+		if (in_array($artisanType, $this->artisanTypes))
+		{
+			// Prepare the URL
+			$url = sprintf($this->artisanURL, $artisanType);
+
+			// Grab the Artisan data
+			return $this->makeCURLCall($url);
+		}
+		// Artisan type error lets make a note of this then return false
+		else
+		{
+			error_log('Artisan Type not valid. (Artisan Type: '. $artisanType .')');
+			return false;
+		}
+	}
+
+	/**
 		* makeCURLCall
 		*
 		* Makes the specified CURL request - this is the meat of the class!
@@ -276,6 +307,7 @@ class D3 {
 			$this->heroURL = $url .'profile/%s/hero/%d?locale='. $this->locale;
 			$this->itemURL = $url .'data/item/%s?locale='. $this->locale;
 			$this->followerURL = $url .'data/follower/%s?locale='. $this->locale;
+			$this->artisanURL = $url .'data/artisan/%s?locale='. $this->locale;
 		}
 
 	/**

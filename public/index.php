@@ -6,6 +6,7 @@
 	$heroID = '27721760';
 	$itemID = 'COGHsoAIEgcIBBXIGEoRHYQRdRUdnWyzFB2qXu51MA04kwNAAFAKYJMD';
 	$followerType = 'enchantress';
+	$artisanType = 'blacksmith';
 
 	$args = ['protocol' => 'http://', 'server' => 'eu', 'locale' => 'en_GB'];
 
@@ -15,5 +16,6 @@
 	//var_dump($D3->getCareer($battleTag));
 	//var_dump($D3->getHero($battleTag, $heroID));
 	//var_dump($D3->getItem($itemID));
-	var_dump($D3->getFollower($followerType));
+	//var_dump($D3->getFollower($followerType));
+	var_dump($D3->getArtisan($artisanType));
 ?>
