@@ -13,6 +13,7 @@ class D3 {
 	// Variables to hold the various built API URLs
 	private $careerURL; // <host> "/api/d3/profile/" <battletag-name> "-" <battletag-code> "/"
 	private $heroURL; // <host> "/api/d3/profile/" <battletag-name> "-" <battletag-code> "/hero/" <hero-id>
+	private $itemURL; // <host> "/api/d3/data/item/" <item-data>
 
 	// These hold all of the possible Protocols, Servers & Locals
 	private $possibleProtocols = ['http://', 'https://'];
@@ -20,10 +21,11 @@ class D3 {
 	private $possibleLocale = ['en_US', 'en_GB', 'es_MX', 'es_ES', 'it_IT', 'pt_PT', 'pt_BR', 'fr_FR', 'ru_RU', 'pl_PL', 'de_DE', 'ko_KR', 'zh_TW', 'zh_CN'];
 
 	// Regular Expression
-	// TODO - Refactor - these are taken from a random GitHub Repo
+	// TODO - Refactor - some of these are taken from a random GitHub Repo
 	// https://github.com/XjSv/Diablo-3-API-PHP/blob/master/diablo3.api.class.php
 	private $battleTagPattern = '/^[\p{L}\p{Mn}][\p{L}\p{Mn}0-9]{2,11}-[0-9]{4,5}+$/u';
 	private $heroIDPattern = '/^[0-9]+$/';
+	private $itemIDPattern = '/^[A-Za-z0-9]+$/';
 
 	// These are extra CURL options which users can specify or change
 	private $extraCURLOptions = [
@@ -73,6 +75,8 @@ class D3 {
 		*
 		* Returns the Career data
 		*
+		* @param string $battleTag - the users BattleTag
+		*
 		* @return array/bool - data if we have it, otherwise false
 		*
 		*/
@@ -81,7 +85,7 @@ class D3 {
 		// Replace '#' with '-' as some users may enter it with '#'
 		$battleTag = str_replace('#', '-', $battleTag);
 
-		// Validate that we have a valid Battle Tag
+		// Validate that we have a valid BattleTag
 		if ($this->validBattleTag($battleTag) == true)
 		{
 			// Prepare the URL
@@ -102,7 +106,10 @@ class D3 {
 		* getHero
 		*
 		* Returns the Hero data
-		*+
+		*
+		* @param string $battleTag - the users BattleTag
+		* @param string $herID - ther Hero ID
+		*
 		* @return array/bool - data if we have it, otherwise false
 		*
 		*/
@@ -111,7 +118,7 @@ class D3 {
 		// Replace '#' with '-' as some users may enter it with '#'
 		$battleTag = str_replace('#', '-', $battleTag);
 
-		// Validate that we have a valid Battle Tag
+		// Validate that we have a valid BattleTag
 		if ($this->validBattleTag($battleTag) == true and $this->validHeroID($heroID) == true)
 		{
 			// Prepare the URL
@@ -124,6 +131,35 @@ class D3 {
 		else
 		{
 			error_log('BattleTag or HeroID provided not valid. (BattleTag: '. $battleTag .'HeroID: '. $heroID .')');
+			return false;
+		}
+	}
+
+	/**
+		* getItem
+		*
+		* Returns the Item data
+		*
+		* @param string $itemID - the itemID
+		*
+		* @return array/bool - data if we have it, otherwise false
+		*
+		*/
+	public function getItem($itemID)
+	{
+		// Validate that we have a valid ItemID
+		if ($this->validItemID($itemID) == true)
+		{
+			// Prepare the URL
+			$url = sprintf($this->itemURL, $itemID);
+
+			// Grab the Career data
+			return $this->makeCURLCall($url);
+		}
+		// ItemID error lets make a note of this then return false
+		else
+		{
+			error_log('ItemID not valid. (ItemID: '. $itemID .')');
 			return false;
 		}
 	}
@@ -205,6 +241,7 @@ class D3 {
 			// Now lets build the API URLs
 			$this->careerURL = $url .'profile/%s/?locale='. $this->locale;
 			$this->heroURL = $url .'profile/%s/hero/%d?locale='. $this->locale;
+			$this->itemURL = $url .'data/item/%s?locale='. $this->locale;
 		}
 
 	/**
@@ -225,7 +262,7 @@ class D3 {
 		*
 		* Checks that a supplied BattleTag is valid - according to https://us.battle.net/support/en/article/BattleTagNamingPolicy
 		*
-		* @param string $battleTag - The users Battle Tag
+		* @param string $battleTag - The users BattleTag
 		*
 		* @return bool - is the BattleTag valid or not?
 		*
@@ -238,16 +275,31 @@ class D3 {
 	/**
 		* validHeroID
 		*
-		* Checks that a supplied Hero ID is valid
+		* Checks that a supplied HeroID is valid
 		*
 		* @param string $heroID - The users Hero ID
 		*
-		* @return bool - is the Hero ID valid or not?
+		* @return bool - is the HeroID valid or not?
 		*
 		*/
 	public function validHeroID ($heroID)
 	{
 		return preg_match($this->heroIDPattern, $heroID) ? true : false;
+	}
+
+	/**
+		* validItemID
+		*
+		* Checks that a supplied Hero ID is valid
+		*
+		* @param string $itemID - The itemID
+		*
+		* @return bool - is the itemID valid or not?
+		*
+		*/
+	public function validItemID ($itemID)
+	{
+		return preg_match($this->itemIDPattern, $itemID) ? true : false;
 	}
 }
 
