@@ -23,8 +23,8 @@ class D3 {
 	private $possibleLocale = ['en_US', 'en_GB', 'es_MX', 'es_ES', 'it_IT', 'pt_PT', 'pt_BR', 'fr_FR', 'ru_RU', 'pl_PL', 'de_DE', 'ko_KR', 'zh_TW', 'zh_CN'];
 
 	// These hold the Follower and Artisan types
-	private $followerTypes = ['enchantress', 'templar', 'scoundrel'];
-	private $artisanTypes = ['blacksmith', 'jeweler'];
+	private $possibleFollowers = ['enchantress', 'templar', 'scoundrel'];
+	private $possibleArtisans = ['blacksmith', 'jeweler'];
 
 	// Regular Expression
 	// TODO - Refactor - some of these are taken from a random GitHub Repo
@@ -183,7 +183,7 @@ class D3 {
 	public function getFollower($followerType)
 	{
 		// Validate that we have a valid Follower type
-		if (in_array($followerType, $this->followerTypes))
+		if (in_array($followerType, $this->possibleFollowers))
 		{
 			// Prepare the URL
 			$url = sprintf($this->followerURL, $followerType);
@@ -212,7 +212,7 @@ class D3 {
 	public function getArtisan($artisanType)
 	{
 		// Validate that we have a valid Artisan type
-		if (in_array($artisanType, $this->artisanTypes))
+		if (in_array($artisanType, $this->possibleArtisans))
 		{
 			// Prepare the URL
 			$url = sprintf($this->artisanURL, $artisanType);
