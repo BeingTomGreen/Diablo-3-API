@@ -297,18 +297,18 @@ class D3 {
 		* Builds the various API URLs based on provided information
 		*
 		*/
-		private function buildAPIURLs()
-		{
-			// Lets build the main part of the URL to save us repeating ourselves
-			$url = $this->protocol . $this->server . $this->host;
+	private function buildAPIURLs()
+	{
+		// Lets build the main part of the URL to save us repeating ourselves
+		$url = $this->protocol . $this->server . $this->host;
 
-			// Now lets build the API URLs
-			$this->careerURL = $url .'profile/%s/?locale='. $this->locale;
-			$this->heroURL = $url .'profile/%s/hero/%d?locale='. $this->locale;
-			$this->itemURL = $url .'data/item/%s?locale='. $this->locale;
-			$this->followerURL = $url .'data/follower/%s?locale='. $this->locale;
-			$this->artisanURL = $url .'data/artisan/%s?locale='. $this->locale;
-		}
+		// Now lets build the API URLs
+		$this->careerURL = $url .'profile/%s/?locale='. $this->locale;
+		$this->heroURL = $url .'profile/%s/hero/%d?locale='. $this->locale;
+		$this->itemURL = $url .'data/item/%s?locale='. $this->locale;
+		$this->followerURL = $url .'data/follower/%s?locale='. $this->locale;
+		$this->artisanURL = $url .'data/artisan/%s?locale='. $this->locale;
+	}
 
 	/**
 		* checkCURL
