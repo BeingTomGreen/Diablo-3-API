@@ -97,7 +97,7 @@ class D3 {
 		// BattleTag error lets make a note of this then return false
 		else
 		{
-			error_log('BattleTag provided not valid. ('. $battleTag .')');
+			error_log('Invalid BattleTag ('. $battleTag .')');
 			return false;
 		}
 	}
@@ -130,7 +130,7 @@ class D3 {
 		// BattleTag error lets make a note of this then return false
 		else
 		{
-			error_log('BattleTag or HeroID provided not valid. (BattleTag: '. $battleTag .'HeroID: '. $heroID .')');
+			error_log('Invalid Battle Tag or Hero ID (Battle Tag: '. $battleTag .'Hero ID: '. $heroID .')');
 			return false;
 		}
 	}
@@ -159,7 +159,7 @@ class D3 {
 		// ItemID error lets make a note of this then return false
 		else
 		{
-			error_log('ItemID not valid. (ItemID: '. $itemID .')');
+			error_log('Invalid Item ID ('. $itemID .')');
 			return false;
 		}
 	}
@@ -191,7 +191,7 @@ class D3 {
 		// Follower type error lets make a note of this then return false
 		else
 		{
-			error_log('Follower Type not valid. (Follower Type: '. $followerType .')');
+			error_log('Invalid Follower ('. $followerType .')');
 			return false;
 		}
 	}
@@ -223,7 +223,7 @@ class D3 {
 		// Artisan type error lets make a note of this then return false
 		else
 		{
-			error_log('Artisan Type not valid. (Artisan Type: '. $artisanType .')');
+			error_log('Invalid Artisan ('. $artisanType .')');
 			return false;
 		}
 	}
@@ -253,7 +253,7 @@ class D3 {
 		// Artisan type error lets make a note of this then return false
 		else
 		{
-			error_log('Class or Gender Type not valid. (Class: '. $classType .' Gender: '. $genderType .')');
+			error_log('Invalid Class or Gender (Class: '. $classType .' Gender: '. $genderType .')');
 			return false;
 		}
 	}
