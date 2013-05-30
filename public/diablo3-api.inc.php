@@ -242,11 +242,8 @@ class D3 {
 		// Check that the Class and Gender are valid
 		if (in_array(strtolower($classType), $this->possibleClasses) and in_array(strtolower($genderType), $this->possibleGenders))
 		{
-			// Build the URL
-			$url = sprintf($this->paperDollURL, strtolower($classType), strtolower($genderType));
-
-			// Return the URL
-			return $url;
+			// Build and return the URL
+			return sprintf($this->paperDollURL, strtolower($classType), strtolower($genderType));
 		}
 		// Class or Gender not valid - make a note of it and return false
 		else
