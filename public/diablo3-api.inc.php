@@ -48,6 +48,9 @@ class D3 {
 		*/
 	function __construct ($args = null)
 	{
+		// Lower case any arguments
+		$args = array_map('strtolower', $args);
+
 		// Check we have all of the CURL functions we need
 		if ($this->checkCURL() == false)
 		{
@@ -57,21 +60,21 @@ class D3 {
 		}
 
 		// Have we been passed a valid Protocol
-		if (isset($args['protocol']) and in_array(strtolower($args['protocol']), $this->possibleProtocols))
+		if (isset($args['protocol']) and in_array($args['protocol'], $this->possibleProtocols))
 		{
-			$this->protocol = strtolower($args['protocol']);
+			$this->protocol = $args['protocol'];
 		}
 
 		// Have we been passed a valid Server
-		if (isset($args['server']) and in_array(strtolower($args['server']), $this->possibleServers))
+		if (isset($args['server']) and in_array($args['server'], $this->possibleServers))
 		{
-			$this->server = strtolower($args['server']);
+			$this->server = $args['server'];
 		}
 
 		// Have we been passed a valid Locale
-		if (isset($args['locale']) and in_array(strtolower($args['locale']), $this->possibleLocale))
+		if (isset($args['locale']) and in_array($args['locale'], $this->possibleLocale))
 		{
-			$this->locale = strtolower($args['locale']);
+			$this->locale = $args['locale'];
 		}
 
 		// Finally lets build the various API URLs
@@ -184,11 +187,14 @@ class D3 {
 		*/
 	public function getFollower($followerType)
 	{
+		// Force the Follower type to lower case
+		$followerType = strtolower($followerType);
+
 		// Validate that we have a valid Follower type
-		if (in_array(strtolower($followerType), $this->possibleFollowers))
+		if (in_array($followerType, $this->possibleFollowers))
 		{
 			// Prepare the URL
-			$url = sprintf($this->followerURL, strtolower($followerType));
+			$url = sprintf($this->followerURL, $followerType);
 
 			// Grab the Follower data
 			return $this->makeCURLCall($url);
@@ -213,11 +219,14 @@ class D3 {
 		*/
 	public function getArtisan($artisanType)
 	{
+		// Force the artisanType to lower case
+		$artisanType = strtolower($artisanType);
+
 		// Validate that we have a valid Artisan type
-		if (in_array(strtolower($artisanType), $this->possibleArtisans))
+		if (in_array($artisanType, $this->possibleArtisans))
 		{
 			// Prepare the URL
-			$url = sprintf($this->artisanURL, strtolower($artisanType));
+			$url = sprintf($this->artisanURL, $artisanType);
 
 			// Grab the Artisan data
 			return $this->makeCURLCall($url);
