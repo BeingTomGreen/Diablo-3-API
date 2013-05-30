@@ -33,9 +33,7 @@ class D3 {
 	private $itemIDPattern = '/^[A-Za-z0-9]+$/';
 
 	// This allows users to add additional CURL options
-	private $extraCURLOptions = [
-		CURLOPT_CONNECTTIMEOUT => 5
-	];
+	public $extraCURLOptions;
 
 	/**
 		* __construct
@@ -278,7 +276,7 @@ class D3 {
 		curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
 
 		// Do we have any extra CURL options?
-		if (isset($this->extraCURLOptions) and !empty($this->extraCURLOptions))
+		if (is_array($this->extraCURLOptions) and !empty($this->extraCURLOptions))
 		{
 			// Set any extra CURL options
 			curl_setopt_array($handle, $this->extraCURLOptions);
