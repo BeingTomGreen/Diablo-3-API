@@ -7,15 +7,19 @@
 	$itemID = 'COGHsoAIEgcIBBXIGEoRHYQRdRUdnWyzFB2qXu51MA04kwNAAFAKYJMD';
 	$followerType = 'enchantress';
 	$artisanType = 'blacksmith';
+	$classType = 'monk';
+	$genderType = 'male';
 
 	$args = ['protocol' => 'http://', 'server' => 'eu', 'locale' => 'en_GB'];
 
 	$D3 = new D3 ($args);
 
-	// Career Data
+	// Examples
 	//var_dump($D3->getCareer($battleTag));
 	//var_dump($D3->getHero($battleTag, $heroID));
 	//var_dump($D3->getItem($itemID));
 	//var_dump($D3->getFollower($followerType));
-	var_dump($D3->getArtisan($artisanType));
+	//var_dump($D3->getArtisan($artisanType));
+	var_dump($D3->getPaperDoll($classType, $genderType));
+
 ?>

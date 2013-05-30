@@ -7,7 +7,8 @@ class D3 {
 	// Default URL information
 	private $protocol = 'http://';
 	private $server = 'eu';
-	private $host = '.battle.net/api/d3/';
+	private $host = '.battle.net/';
+	private $apiSlug = 'api/d3/';
 	private $locale = 'en_GB';
 
 	// Variables to hold the various built API URLs
@@ -16,6 +17,7 @@ class D3 {
 	private $itemURL; // <host> "/api/d3/data/item/" <item-data>
 	private $followerURL; // <host> "/api/d3/data/follower/" < follower-type>
 	private $artisanURL; // <host> "/api/d3/data/artisan/" < artisan-type>
+	private $paperDollURL; // <host> "/static/images/profile/hero/paperdoll/" < class-type> "-" < gender-type> ".jpg"
 
 	// These hold all of the possible Protocols, Servers & Locals
 	private $possibleProtocols = ['http://', 'https://'];
@@ -25,6 +27,8 @@ class D3 {
 	// These hold the possibilities for various inputs to be validated against
 	private $possibleFollowers = ['enchantress', 'templar', 'scoundrel'];
 	private $possibleArtisans = ['blacksmith', 'jeweler'];
+	private $possibleClasses = ['barbarian', 'witch-doctor', 'demon-hunter', 'monk', 'wizard'];
+	private $possibleGenders = ['male', 'female'];
 
 	// Regular Expression
 	// TODO - Refactor - some of these are taken from a random GitHub Repo
@@ -229,6 +233,36 @@ class D3 {
 	}
 
 	/**
+		* getPaperDoll
+		*
+		* Returns a link to the Paper Doll image
+		*
+		* @param string $class - the class
+		* @param string $gender - the gender
+		*
+		* @return string/bool - data if we have it, otherwise false
+		*
+		*/
+	public function getPaperDoll($classType, $genderType)
+	{
+		// Validate that we have a valid Artisan type
+		if (in_array(strtolower($classType), $this->possibleClasses) and in_array(strtolower($genderType), $this->possibleGenders))
+		{
+			// Prepare the URL
+			$url = sprintf($this->paperDollURL, strtolower($classType), strtolower($genderType));
+
+			// Return the URL
+			return $url;
+		}
+		// Artisan type error lets make a note of this then return false
+		else
+		{
+			error_log('Class or Gender Type not valid. (Class: '. $classType .' Gender: '. $genderType .')');
+			return false;
+		}
+	}
+
+	/**
 		* makeCURLCall
 		*
 		* Makes the specified CURL request - this is the meat of the class!
@@ -303,11 +337,12 @@ class D3 {
 		$url = $this->protocol . $this->server . $this->host;
 
 		// Now lets build the API URLs
-		$this->careerURL = $url .'profile/%s/?locale='. $this->locale;
-		$this->heroURL = $url .'profile/%s/hero/%d?locale='. $this->locale;
-		$this->itemURL = $url .'data/item/%s?locale='. $this->locale;
-		$this->followerURL = $url .'data/follower/%s?locale='. $this->locale;
-		$this->artisanURL = $url .'data/artisan/%s?locale='. $this->locale;
+		$this->careerURL = $url . $this->apiSlug .'profile/%s/?locale='. $this->locale;
+		$this->heroURL = $url . $this->apiSlug .'profile/%s/hero/%d?locale='. $this->locale;
+		$this->itemURL = $url . $this->apiSlug .'data/item/%s?locale='. $this->locale;
+		$this->followerURL = $url . $this->apiSlug .'data/follower/%s?locale='. $this->locale;
+		$this->artisanURL = $url . $this->apiSlug .'data/artisan/%s?locale='. $this->locale;
+		$this->paperDollURL = $url .'d3/static/images/profile/hero/paperdoll/%s-%s.jpg';
 	}
 
 	/**
