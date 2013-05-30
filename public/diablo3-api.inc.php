@@ -22,7 +22,7 @@ class D3 {
 	private $possibleServers = ['us', 'eu', 'tw', 'kr', 'cn'];
 	private $possibleLocale = ['en_US', 'en_GB', 'es_MX', 'es_ES', 'it_IT', 'pt_PT', 'pt_BR', 'fr_FR', 'ru_RU', 'pl_PL', 'de_DE', 'ko_KR', 'zh_TW', 'zh_CN'];
 
-	// These hold the Follower and Artisan types
+	// These hold the possibilities for various inputs to be validated against
 	private $possibleFollowers = ['enchantress', 'templar', 'scoundrel'];
 	private $possibleArtisans = ['blacksmith', 'jeweler'];
 
@@ -55,21 +55,21 @@ class D3 {
 		}
 
 		// Have we been passed a valid Protocol
-		if (isset($args['protocol']) and in_array($args['protocol'], $this->possibleProtocols))
+		if (isset($args['protocol']) and in_array(strtolower($args['protocol']), $this->possibleProtocols))
 		{
-			$this->protocol = $args['protocol'];
+			$this->protocol = strtolower($args['protocol']);
 		}
 
 		// Have we been passed a valid Server
-		if (isset($args['server']) and in_array($args['server'], $this->possibleServers))
+		if (isset($args['server']) and in_array(strtolower($args['server']), $this->possibleServers))
 		{
-			$this->server = $args['server'];
+			$this->server = strtolower($args['server']);
 		}
 
 		// Have we been passed a valid Locale
-		if (isset($args['locale']) and in_array($args['locale'], $this->possibleLocale))
+		if (isset($args['locale']) and in_array(strtolower($args['locale']), $this->possibleLocale))
 		{
-			$this->locale = $args['locale'];
+			$this->locale = strtolower($args['locale']);
 		}
 
 		// Finally lets build the various API URLs
@@ -157,7 +157,7 @@ class D3 {
 		if ($this->validItemID($itemID) == true)
 		{
 			// Prepare the URL
-			$url = sprintf($this->itemURL, $itemID);
+			$url = sprintf($this->itemURL, strtolower($itemID));
 
 			// Grab the Career data
 			return $this->makeCURLCall($url);
@@ -183,10 +183,10 @@ class D3 {
 	public function getFollower($followerType)
 	{
 		// Validate that we have a valid Follower type
-		if (in_array($followerType, $this->possibleFollowers))
+		if (in_array(strtolower($followerType), $this->possibleFollowers))
 		{
 			// Prepare the URL
-			$url = sprintf($this->followerURL, $followerType);
+			$url = sprintf($this->followerURL, strtolower($followerType));
 
 			// Grab the Follower data
 			return $this->makeCURLCall($url);
@@ -212,10 +212,10 @@ class D3 {
 	public function getArtisan($artisanType)
 	{
 		// Validate that we have a valid Artisan type
-		if (in_array($artisanType, $this->possibleArtisans))
+		if (in_array(strtolower($artisanType), $this->possibleArtisans))
 		{
 			// Prepare the URL
-			$url = sprintf($this->artisanURL, $artisanType);
+			$url = sprintf($this->artisanURL, strtolower($artisanType));
 
 			// Grab the Artisan data
 			return $this->makeCURLCall($url);
