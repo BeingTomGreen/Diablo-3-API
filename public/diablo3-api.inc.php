@@ -1,9 +1,6 @@
 <?php
 
 class D3 {
-	// Battle Tag
-	private $battleTag;
-
 	// Default URL information
 	private $protocol = 'http://';
 	private $server = 'eu';
@@ -154,7 +151,7 @@ class D3 {
 		if ($this->validItemID($itemID) == true)
 		{
 			// Prepare the URL
-			$url = sprintf($this->itemURL, strtolower($itemID));
+			$url = sprintf($this->itemURL, $itemID);
 
 			// Grab the Career data
 			return $this->makeCURLCall($url);
