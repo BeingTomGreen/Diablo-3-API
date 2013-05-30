@@ -31,10 +31,8 @@ class D3 {
 	private $possibleGenders = ['male', 'female'];
 
 	// Regular Expression
-	// TODO - Refactor - some of these are taken from a random GitHub Repo
-	// https://github.com/XjSv/Diablo-3-API-PHP/blob/master/diablo3.api.class.php
-	private $battleTagPattern = '/^[\p{L}\p{Mn}][\p{L}\p{Mn}0-9]{2,11}-[0-9]{4,5}+$/u';
-	private $heroIDPattern = '/^[0-9]+$/';
+	private $battleTagPattern = '/^[\p{L}\p{Mn}][\p{L}\p{Mn}0-9]{2,11}-[0-9]{4,5}+$/u'; // - https://github.com/XjSv/Diablo-3-API-PHP/issues/4#issuecomment-15982672
+	private $heroIDPattern = '/^[\d]+$/';
 	private $itemIDPattern = '/^[A-Za-z0-9]+$/';
 
 	// These are extra CURL options which users can specify or change
