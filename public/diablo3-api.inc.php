@@ -1,14 +1,14 @@
 <?php
 
 class D3 {
-	// Default URL information
+	// Default API URL information
 	private $protocol = 'http://';
 	private $server = 'eu';
 	private $host = '.battle.net/';
 	private $apiSlug = 'api/d3/';
 	private $locale = 'en_GB';
 
-	// Variables to hold the various built API URLs
+	// These hold the various API URLs built by buildAPIURLs()
 	private $careerURL; // <host> "/api/d3/profile/" <battletag-name> "-" <battletag-code> "/"
 	private $heroURL; // <host> "/api/d3/profile/" <battletag-name> "-" <battletag-code> "/hero/" <hero-id>
 	private $itemURL; // <host> "/api/d3/data/item/" <item-data>
@@ -16,23 +16,23 @@ class D3 {
 	private $artisanURL; // <host> "/api/d3/data/artisan/" < artisan-type>
 	private $paperDollURL; // <host> "/static/images/profile/hero/paperdoll/" < class-type> "-" < gender-type> ".jpg"
 
-	// These hold all of the possible Protocols, Servers & Locals
+	// These hold the possible protocols, servers & locals
 	private $possibleProtocols = ['http://', 'https://'];
 	private $possibleServers = ['us', 'eu', 'tw', 'kr', 'cn'];
 	private $possibleLocale = ['en_US', 'en_GB', 'es_MX', 'es_ES', 'it_IT', 'pt_PT', 'pt_BR', 'fr_FR', 'ru_RU', 'pl_PL', 'de_DE', 'ko_KR', 'zh_TW', 'zh_CN'];
 
-	// These hold the possibilities for various inputs to be validated against
+	// These hold the possibilities for various inputs to be checked against
 	private $possibleFollowers = ['enchantress', 'templar', 'scoundrel'];
 	private $possibleArtisans = ['blacksmith', 'jeweler'];
 	private $possibleClasses = ['barbarian', 'witch-doctor', 'demon-hunter', 'monk', 'wizard'];
 	private $possibleGenders = ['male', 'female'];
 
-	// Regular Expression
+	// These hold the Regular Expressions for various inputs to be checked against
 	private $battleTagPattern = '/^[\p{L}\p{Mn}][\p{L}\p{Mn}0-9]{2,11}-[0-9]{4,5}+$/u'; // - https://github.com/XjSv/Diablo-3-API-PHP/issues/4#issuecomment-15982672
 	private $heroIDPattern = '/^[\d]+$/';
 	private $itemIDPattern = '/^[A-Za-z0-9]+$/';
 
-	// These are extra CURL options which users can specify or change
+	// This allows users to add additional CURL options
 	private $extraCURLOptions = [
 		CURLOPT_CONNECTTIMEOUT => 5
 	];
@@ -40,27 +40,27 @@ class D3 {
 	/**
 		* __construct
 		*
-		* @param array $args - An array of optional settings for Protocol, Server and Locale
+		* @param array $args - Optional array of settings (protocol, server and locale)
 		*
 		*/
 	function __construct ($args = null)
 	{
-		// Lower case any arguments
+		// Make all options lower case
 		$args = array_map('strtolower', $args);
 
-		// Have we been passed a valid Protocol
+		// Check if we have been passed a valid protocol and if so use it
 		if (isset($args['protocol']) and in_array($args['protocol'], $this->possibleProtocols))
 		{
 			$this->protocol = $args['protocol'];
 		}
 
-		// Have we been passed a valid Server
+		// Check if we have been passed a valid server and if so use it
 		if (isset($args['server']) and in_array($args['server'], $this->possibleServers))
 		{
 			$this->server = $args['server'];
 		}
 
-		// Have we been passed a valid Locale
+		// Check if we have been passed a valid locale and if so use it
 		if (isset($args['locale']) and in_array($args['locale'], $this->possibleLocale))
 		{
 			$this->locale = $args['locale'];
@@ -75,9 +75,9 @@ class D3 {
 		*
 		* Returns the Career data
 		*
-		* @param string $battleTag - the users BattleTag
+		* @param string $battleTag - the users Battle Tag
 		*
-		* @return array/bool - data if we have it, otherwise false
+		* @return json/false - data if we have it, otherwise false
 		*
 		*/
 	public function getCareer($battleTag)
@@ -85,16 +85,16 @@ class D3 {
 		// Replace '#' with '-' as some users may enter it with '#'
 		$battleTag = str_replace('#', '-', $battleTag);
 
-		// Validate that we have a valid BattleTag
+		// Check that the Battle Tag is valid
 		if ($this->validBattleTag($battleTag) == true)
 		{
-			// Prepare the URL
+			// Build the URL
 			$url = sprintf($this->careerURL, $battleTag);
 
-			// Grab the Career data
+			// Grab the data
 			return $this->makeCURLCall($url);
 		}
-		// BattleTag error lets make a note of this then return false
+		// Battle Tag not valid - make a note of it and return false
 		else
 		{
 			error_log('Invalid BattleTag ('. $battleTag .')');
@@ -107,10 +107,10 @@ class D3 {
 		*
 		* Returns the Hero data
 		*
-		* @param string $battleTag - the users BattleTag
-		* @param string $herID - ther Hero ID
+		* @param string $battleTag - the users Battle Tag
+		* @param string $herID - the Hero ID
 		*
-		* @return array/bool - data if we have it, otherwise false
+		* @return json/false - data if we have it, otherwise false
 		*
 		*/
 	public function getHero($battleTag, $heroID)
@@ -118,16 +118,16 @@ class D3 {
 		// Replace '#' with '-' as some users may enter it with '#'
 		$battleTag = str_replace('#', '-', $battleTag);
 
-		// Validate that we have a valid BattleTag
+		// Check that the Battle Tag and Hero ID are valid
 		if ($this->validBattleTag($battleTag) == true and $this->validHeroID($heroID) == true)
 		{
-			// Prepare the URL
+			// Build the URL
 			$url = sprintf($this->heroURL, $battleTag, $heroID);
 
-			// Grab the Career data
+			// Grab the data
 			return $this->makeCURLCall($url);
 		}
-		// BattleTag error lets make a note of this then return false
+		// Battle Tag or Hero ID not valid - make a note of it and return false
 		else
 		{
 			error_log('Invalid Battle Tag or Hero ID (Battle Tag: '. $battleTag .'Hero ID: '. $heroID .')');
@@ -140,23 +140,23 @@ class D3 {
 		*
 		* Returns the Item data
 		*
-		* @param string $itemID - the itemID
+		* @param string $itemID - the Item ID
 		*
-		* @return array/bool - data if we have it, otherwise false
+		* @return json/false - data if we have it, otherwise false
 		*
 		*/
 	public function getItem($itemID)
 	{
-		// Validate that we have a valid ItemID
+		// Check that the Item ID is valid
 		if ($this->validItemID($itemID) == true)
 		{
-			// Prepare the URL
+			// Build the URL
 			$url = sprintf($this->itemURL, $itemID);
 
-			// Grab the Career data
+			// Grab the data
 			return $this->makeCURLCall($url);
 		}
-		// ItemID error lets make a note of this then return false
+		// Item ID not valid - make a note of it and return false
 		else
 		{
 			error_log('Invalid Item ID ('. $itemID .')');
@@ -171,24 +171,24 @@ class D3 {
 		*
 		* @param string $followerType - the Follower type
 		*
-		* @return array/bool - data if we have it, otherwise false
+		* @return json/false - data if we have it, otherwise false
 		*
 		*/
 	public function getFollower($followerType)
 	{
-		// Force the Follower type to lower case
+		// Make the Follower lowercase
 		$followerType = strtolower($followerType);
 
-		// Validate that we have a valid Follower type
+		// Check that the Follower is valid
 		if (in_array($followerType, $this->possibleFollowers))
 		{
-			// Prepare the URL
+			// Build the URL
 			$url = sprintf($this->followerURL, $followerType);
 
-			// Grab the Follower data
+			// Grab the data
 			return $this->makeCURLCall($url);
 		}
-		// Follower type error lets make a note of this then return false
+		// Follower not valid - make a note of it and return false
 		else
 		{
 			error_log('Invalid Follower ('. $followerType .')');
@@ -203,24 +203,24 @@ class D3 {
 		*
 		* @param string $artisanType - the Artisan type
 		*
-		* @return array/bool - data if we have it, otherwise false
+		* @return json/false - data if we have it, otherwise false
 		*
 		*/
 	public function getArtisan($artisanType)
 	{
-		// Force the artisanType to lower case
+		// Make the Artisan lowercase
 		$artisanType = strtolower($artisanType);
 
-		// Validate that we have a valid Artisan type
+		// Check that the Artisan is valid
 		if (in_array($artisanType, $this->possibleArtisans))
 		{
-			// Prepare the URL
+			// Build the URL
 			$url = sprintf($this->artisanURL, $artisanType);
 
-			// Grab the Artisan data
+			// Grab the data
 			return $this->makeCURLCall($url);
 		}
-		// Artisan type error lets make a note of this then return false
+		// Artisan not valid - make a note of it and return false
 		else
 		{
 			error_log('Invalid Artisan ('. $artisanType .')');
@@ -233,24 +233,24 @@ class D3 {
 		*
 		* Returns a link to the Paper Doll image
 		*
-		* @param string $class - the class
-		* @param string $gender - the gender
+		* @param string $class - the Class
+		* @param string $gender - the Gender
 		*
-		* @return string/bool - data if we have it, otherwise false
+		* @return string/false - data if we have it, otherwise false
 		*
 		*/
 	public function getPaperDoll($classType, $genderType)
 	{
-		// Validate that we have a valid Artisan type
+		// Check that the Class and Gender are valid
 		if (in_array(strtolower($classType), $this->possibleClasses) and in_array(strtolower($genderType), $this->possibleGenders))
 		{
-			// Prepare the URL
+			// Build the URL
 			$url = sprintf($this->paperDollURL, strtolower($classType), strtolower($genderType));
 
 			// Return the URL
 			return $url;
 		}
-		// Artisan type error lets make a note of this then return false
+		// Class or Gender not valid - make a note of it and return false
 		else
 		{
 			error_log('Invalid Class or Gender (Class: '. $classType .' Gender: '. $genderType .')');
@@ -280,7 +280,7 @@ class D3 {
 		// Do we have any extra CURL options?
 		if (isset($this->extraCURLOptions) and !empty($this->extraCURLOptions))
 		{
-			// Set any customisable/extra CURL options
+			// Set any extra CURL options
 			curl_setopt_array($handle, $this->extraCURLOptions);
 		}
 
@@ -291,29 +291,29 @@ class D3 {
 		$errorCode = curl_errno($handle);
 		$errorMessage = curl_error($handle);
 
-		// Close the connection
+		// Close the CURL connection
 		curl_close($handle);
 
-		// Our error code is 0 (0 means OK!)
+		// Check our error code is 0 (0 means OK!)
 		if ($errorCode == 0)
 		{
-			// json decode the $data
+			// Decode the json response
 			$data = json_decode($data, true);
 
 			// Check we don't have an error code
 			if (isset($data['code']) and isset($data['reason']))
 			{
-				// API error lets make a note of this then return false
+				// API error - make a note of it and return false
 				error_log('API error: '. $data['code'] .' - '. $data['reason'] .' ('. $url .')!');
 				return false;
 			}
-			// No errors, lets return the data
+			// No errors - return the data
 			else
 			{
 				return $data;
 			}
 		}
-		// CURL error lets make a note of this then return false
+		// CURL error - make a note of it and return false
 		else
 		{
 			error_log('CURL error "'. $errorCode .'" ('. $errorMessage .').');
@@ -324,7 +324,9 @@ class D3 {
 	/**
 		* buildAPIURLs
 		*
-		* Builds the various API URLs based on provided information
+		* Build the various API URLs based on provided information
+		*
+		* @todo drop this method - build the URLs in getX methods
 		*
 		*/
 	private function buildAPIURLs()
@@ -344,11 +346,11 @@ class D3 {
 	/**
 		* validBattleTag
 		*
-		* Checks that a supplied BattleTag is valid - according to https://us.battle.net/support/en/article/BattleTagNamingPolicy
+		* Checks that a supplied Battle Tag is valid - according to https://us.battle.net/support/en/article/BattleTagNamingPolicy
 		*
-		* @param string $battleTag - The users BattleTag
+		* @param string $battleTag - The Battle Tag
 		*
-		* @return bool - is the BattleTag valid or not?
+		* @return bool - is the Battle Tag valid or not?
 		*
 		*/
 	public function validBattleTag ($battleTag)
@@ -359,9 +361,9 @@ class D3 {
 	/**
 		* validHeroID
 		*
-		* Checks that a supplied HeroID is valid
+		* Checks that a supplied Hero ID is valid
 		*
-		* @param string $heroID - The users Hero ID
+		* @param string $heroID - The Hero ID
 		*
 		* @return bool - is the HeroID valid or not?
 		*
@@ -374,11 +376,11 @@ class D3 {
 	/**
 		* validItemID
 		*
-		* Checks that a supplied Hero ID is valid
+		* Checks that a supplied Item ID is valid
 		*
-		* @param string $itemID - The itemID
+		* @param string $itemID - The Item ID
 		*
-		* @return bool - is the itemID valid or not?
+		* @return bool - is the Item ID valid or not?
 		*
 		*/
 	public function validItemID ($itemID)
