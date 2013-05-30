@@ -51,14 +51,6 @@ class D3 {
 		// Lower case any arguments
 		$args = array_map('strtolower', $args);
 
-		// Check we have all of the CURL functions we need
-		if ($this->checkCURL() == false)
-		{
-			// We are missing some functions, lets make a note of this then exit
-			error_log('Missing some CURL functions.');
-			exit('Sorry, missing some CURL functions - please contact your system administrator.');
-		}
-
 		// Have we been passed a valid Protocol
 		if (isset($args['protocol']) and in_array($args['protocol'], $this->possibleProtocols))
 		{
@@ -351,19 +343,6 @@ class D3 {
 		$this->artisanURL = $url . $this->apiSlug .'data/artisan/%s?locale='. $this->locale;
 		$this->paperDollURL = $url .'d3/static/images/profile/hero/paperdoll/%s-%s.jpg';
 	}
-
-	/**
-		* checkCURL
-		*
-		* Checks that we have all of the required CURL functions
-		*
-		* @return bool - do we have all of the CURL functions?
-		*
-		*/
-		public function checkCURL()
-		{
-			return function_exists("curl_init") and function_exists("curl_setopt") and function_exists("curl_exec") and function_exists("curl_close") ? true : false;
-		}
 
 	/**
 		* validBattleTag
