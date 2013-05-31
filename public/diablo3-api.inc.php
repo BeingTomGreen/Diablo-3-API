@@ -268,16 +268,16 @@ class D3 {
 		// Initialise CURL
 		$handle = curl_init();
 
-		// Set the CURL options we need
-		curl_setopt($handle, CURLOPT_URL, $url);
-		curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
-
 		// Do we have any extra CURL options?
 		if (is_array($this->extraCURLOptions) and !empty($this->extraCURLOptions))
 		{
 			// Set any extra CURL options
 			curl_setopt_array($handle, $this->extraCURLOptions);
 		}
+
+		// Set the CURL options we need
+		curl_setopt($handle, CURLOPT_URL, $url);
+		curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
 
 		// Grab the data
 		$data = curl_exec($handle);
