@@ -1,12 +1,17 @@
 <?php
 
 class D3 {
-	// Default API URL information
+	// Hold the URL parts
 	private $protocol = 'http://';
 	private $server = 'eu';
 	private $host = '.battle.net/';
 	private $apiSlug = 'api/d3/';
+	private $mediaSlug = 'd3/static/images/';
 	private $locale = 'en_GB';
+
+	// Hold the built URLs
+	private $apiURL;
+	private $mediaURL;
 
 	// These hold the various API URLs built by buildAPIURLs()
 	private $careerURL; // <host> "/api/d3/profile/" <battletag-name> "-" <battletag-code> "/"
@@ -64,8 +69,9 @@ class D3 {
 			$this->locale = $args['locale'];
 		}
 
-		// Finally lets build the various API URLs
-		$this->buildAPIURLs();
+		// Lets build the main part of the URLs to save us repeating ourselves
+		$this->apiURL = $this->protocol . $this->server . $this->host . $this->apiSlug;
+		$this->mediaURL = $this->protocol . $this->server . $this->host . $this->mediaSlug;
 	}
 
 	/**
@@ -87,7 +93,10 @@ class D3 {
 		if ($this->validBattleTag($battleTag) == true)
 		{
 			// Build the URL
-			$url = sprintf($this->careerURL, $battleTag);
+			$url = sprintf(
+				$this->apiURL .'profile/%s/?locale='. $this->locale,
+				$battleTag
+			);
 
 			// Grab the data
 			return $this->makeCURLCall($url);
@@ -120,7 +129,11 @@ class D3 {
 		if ($this->validBattleTag($battleTag) == true and $this->validHeroID($heroID) == true)
 		{
 			// Build the URL
-			$url = sprintf($this->heroURL, $battleTag, $heroID);
+			$url = sprintf(
+				$this->apiURL .'profile/%s/hero/%d?locale'. $this->locale,
+				$battleTag,
+				$heroID
+			);
 
 			// Grab the data
 			return $this->makeCURLCall($url);
@@ -149,7 +162,10 @@ class D3 {
 		if ($this->validItemID($itemID) == true)
 		{
 			// Build the URL
-			$url = sprintf($this->itemURL, $itemID);
+			$url = sprintf(
+				$this->apiURL .'data/item/%s?locale='. $this->locale,
+				$itemID
+			);
 
 			// Grab the data
 			return $this->makeCURLCall($url);
@@ -181,7 +197,10 @@ class D3 {
 		if (in_array($followerType, $this->possibleFollowers))
 		{
 			// Build the URL
-			$url = sprintf($this->followerURL, $followerType);
+			$url = sprintf(
+				$this->apiURL .'data/follower/%s?locale='. $this->locale,
+				strtolower($followerType)
+			);
 
 			// Grab the data
 			return $this->makeCURLCall($url);
@@ -213,7 +232,10 @@ class D3 {
 		if (in_array($artisanType, $this->possibleArtisans))
 		{
 			// Build the URL
-			$url = sprintf($this->artisanURL, $artisanType);
+			$url = sprintf(
+				$this->apiURL .'data/artisan/%s?locale='. $this->locale,
+				strtolower($artisanType)
+			);
 
 			// Grab the data
 			return $this->makeCURLCall($url);
@@ -243,7 +265,11 @@ class D3 {
 		if (in_array(strtolower($classType), $this->possibleClasses) and in_array(strtolower($genderType), $this->possibleGenders))
 		{
 			// Build and return the URL
-			return sprintf($this->paperDollURL, strtolower($classType), strtolower($genderType));
+			return sprintf(
+				$this->mediaURL .'profile/hero/paperdoll/%s-%s.jpg',
+				strtolower($classType),
+				strtolower($genderType)
+			);
 		}
 		// Class or Gender not valid - make a note of it and return false
 		else
@@ -314,28 +340,6 @@ class D3 {
 			error_log('CURL error "'. $errorCode .'" ('. $errorMessage .').');
 			return false;
 		}
-	}
-
-	/**
-		* buildAPIURLs
-		*
-		* Build the various API URLs based on provided information
-		*
-		* @todo drop this method - build the URLs in getX methods
-		*
-		*/
-	private function buildAPIURLs()
-	{
-		// Lets build the main part of the URL to save us repeating ourselves
-		$url = $this->protocol . $this->server . $this->host;
-
-		// Now lets build the API URLs
-		$this->careerURL = $url . $this->apiSlug .'profile/%s/?locale='. $this->locale;
-		$this->heroURL = $url . $this->apiSlug .'profile/%s/hero/%d?locale='. $this->locale;
-		$this->itemURL = $url . $this->apiSlug .'data/item/%s?locale='. $this->locale;
-		$this->followerURL = $url . $this->apiSlug .'data/follower/%s?locale='. $this->locale;
-		$this->artisanURL = $url . $this->apiSlug .'data/artisan/%s?locale='. $this->locale;
-		$this->paperDollURL = $url .'d3/static/images/profile/hero/paperdoll/%s-%s.jpg';
 	}
 
 	/**
