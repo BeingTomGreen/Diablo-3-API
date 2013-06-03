@@ -41,9 +41,7 @@ class D3 {
 	public $extraCURLOptions;
 
 	// Holds an array of the available Memcached servers (server => port)
-	public $memcachedPool = [
-		['host' => '127.0.0.1', 'port' => '11211']
-	];
+	private $memcachedPool;
 
 	// Time (in seconds) to cache items for
 	public $cachePeriod = 120;
@@ -59,9 +57,6 @@ class D3 {
 		*/
 	function __construct ($args = null)
 	{
-		// Make all options lower case
-		$args = array_map('strtolower', $args);
-
 		// Check if we have been passed a valid protocol and if so use it
 		if (isset($args['protocol']) and in_array($args['protocol'], $this->possibleProtocols))
 		{
@@ -81,17 +76,17 @@ class D3 {
 		}
 
 		// Lets build the main part of the URLs to save us repeating ourselves
-		$this->apiURL = $this->protocol . $this->server . $this->host . $this->apiSlug;
-		$this->mediaURL = $this->protocol . $this->server . $this->host . $this->mediaSlug;
+		$this->apiURL = strtolower($this->protocol . $this->server . $this->host . $this->apiSlug);
+		$this->mediaURL = strtolower($this->protocol . $this->server . $this->host . $this->mediaSlug);
 
 		// Check if we have the Memcache module and have been given an array of Memcached servers
-		if (!empty($this->memcachedPool) and class_exists('Memcache'))
+		if (isset($args['memcachedPool']) and !empty($args['memcachedPool']) and class_exists('Memcache'))
 		{
 			// Create a new Memcache instance
 			$this->memcache = new Memcache;
 
 			// Loop through each of the specified servers
-			foreach ($this->memcachedPool as $server)
+			foreach ($args['memcachedPool'] as $server)
 			{
 				// Add each server to the pool
 				$this->memcache->connect($server['host'], $server['port']);

@@ -14,8 +14,12 @@
 	$classType = 'monk';
 	$genderType = 'male';
 
+	$memcachedPool = [
+		['host' => '127.0.0.1', 'port' => '11211']
+	];
+
 	// Specify URL information here
-	$args = ['protocol' => 'http://', 'server' => 'eu', 'locale' => 'en_GB'];
+	$args = ['protocol' => 'http://', 'server' => 'eu', 'locale' => 'en_GB', 'memcachedPool' => $memcachedPool];
 
 	// Create a new instance
 	$D3 = new D3 ($args);
@@ -33,8 +37,8 @@
 	//var_dump($D3->getCareer($battleTag));
 	//var_dump($D3->getHero($battleTag, $heroID));
 	//var_dump($D3->getItem($itemID));
-	//var_dump($D3->getFollower($followerType));
+	var_dump($D3->getFollower($followerType));
 	//var_dump($D3->getArtisan($artisanType));
-	var_dump($D3->getPaperDoll($classType, $genderType));
+	//var_dump($D3->getPaperDoll($classType, $genderType));
 
 ?>
