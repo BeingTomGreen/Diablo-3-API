@@ -40,7 +40,7 @@ class D3 {
 	// This allows users to add additional CURL options
 	public $extraCURLOptions;
 
-	// Holds an array of the available Memcached servers (server => port)
+	// Holds the pool of available Memcached servers
 	private $memcachedPool;
 
 	// Time (in seconds) to cache items for
@@ -76,8 +76,8 @@ class D3 {
 		}
 
 		// Lets build the main part of the URLs to save us repeating ourselves
-		$this->apiURL = strtolower($this->protocol . $this->server . $this->host . $this->apiSlug);
-		$this->mediaURL = strtolower($this->protocol . $this->server . $this->host . $this->mediaSlug);
+		$this->apiURL = $this->protocol . $this->server . $this->host . $this->apiSlug;
+		$this->mediaURL = $this->protocol . $this->server . $this->host . $this->mediaSlug;
 
 		// Check if we have the Memcache module and have been given an array of Memcached servers
 		if (isset($args['memcachedPool']) and !empty($args['memcachedPool']) and class_exists('Memcache'))
