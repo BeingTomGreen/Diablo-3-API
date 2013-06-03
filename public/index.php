@@ -1,5 +1,7 @@
 <?php
 
+	error_reporting(-1);
+
 	// Include the API class
 	require_once 'diablo3-api.inc.php';
 
@@ -23,6 +25,9 @@
 	$D3->extraCURLOptions = [
 		CURLOPT_CONNECTTIMEOUT => 5
 	];
+
+	// Set how long we want to hold cached items for
+	$D3->cachePeriod = 120;
 
 	// Examples API calls
 	//var_dump($D3->getCareer($battleTag));
