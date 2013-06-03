@@ -9,7 +9,6 @@ I may very well create my own Docs repo and stick it on github.io to help others
 ## TODO
 - Support authenticated API Calls - Same syntax as the [WOW API](https://github.com/Blizzard/api-wow-docs#authentication), need to manually email support and get an application key.
 - Since we are limited to 10k or 50k (if authenticated) calls, it may make sense to cache the results (unsure if this is best delt with outside of the class). Also look into using IFMODSINCE,
-- Test HTTPS support.
 
 ## License
 This is free and unencumbered software released into the public domain. See UNLICENSE for more details.
