@@ -40,15 +40,6 @@ class D3 {
 	// This allows users to add additional CURL options
 	public $extraCURLOptions;
 
-	// Holds the pool of available Memcached servers
-	private $memcachedPool;
-
-	// Time (in seconds) to cache items for
-	public $cachePeriod = 120;
-
-	// Holds the Memcahce instance
-	private $memcache = null;
-
 	/**
 		* __construct
 		*
@@ -78,20 +69,6 @@ class D3 {
 		// Lets build the main part of the URLs to save us repeating ourselves
 		$this->apiURL = $this->protocol . $this->server . $this->host . $this->apiSlug;
 		$this->mediaURL = $this->protocol . $this->server . $this->host . $this->mediaSlug;
-
-		// Check if we have the Memcache module and have been given an array of Memcached servers
-		if (isset($args['memcachedPool']) and !empty($args['memcachedPool']) and class_exists('Memcache'))
-		{
-			// Create a new Memcache instance
-			$this->memcache = new Memcache;
-
-			// Loop through each of the specified servers
-			foreach ($args['memcachedPool'] as $server)
-			{
-				// Add each server to the pool
-				$this->memcache->connect($server['host'], $server['port']);
-			}
-		}
 	}
 
 	/**
@@ -311,71 +288,55 @@ class D3 {
 		*/
 	private function makeCURLCall($url)
 	{
-		// Check if we have a Memcache instance and see if the data is already cached
-		if ($this->memcache != false and $this->memcache->get($url) != false)
+		// Initialise CURL
+		$handle = curl_init();
+
+		// Do we have any extra CURL options?
+		if (is_array($this->extraCURLOptions) and !empty($this->extraCURLOptions))
 		{
-			return $this->memcache->get($url);
+			// Set any extra CURL options
+			curl_setopt_array($handle, $this->extraCURLOptions);
 		}
-		// Data not in cache lets grab it
-		else
+
+		// Set the CURL options we need
+		curl_setopt($handle, CURLOPT_URL, $url);
+		curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
+
+		// Grab the data
+		$data = curl_exec($handle);
+
+		// Grab the CURL error code and message
+		$errorCode = curl_errno($handle);
+		$errorMessage = curl_error($handle);
+
+		// Close the CURL connection
+		curl_close($handle);
+
+		// Check our error code is 0 (0 means OK!)
+		if ($errorCode == 0)
 		{
-			// Initialise CURL
-			$handle = curl_init();
+			// Decode the json response
+			$data = json_decode($data, true);
 
-			// Do we have any extra CURL options?
-			if (is_array($this->extraCURLOptions) and !empty($this->extraCURLOptions))
+			// Check we don't have an error code
+			if (isset($data['code']) and isset($data['reason']))
 			{
-				// Set any extra CURL options
-				curl_setopt_array($handle, $this->extraCURLOptions);
-			}
-
-			// Set the CURL options we need
-			curl_setopt($handle, CURLOPT_URL, $url);
-			curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
-
-			// Grab the data
-			$data = curl_exec($handle);
-
-			// Grab the CURL error code and message
-			$errorCode = curl_errno($handle);
-			$errorMessage = curl_error($handle);
-
-			// Close the CURL connection
-			curl_close($handle);
-
-			// Check our error code is 0 (0 means OK!)
-			if ($errorCode == 0)
-			{
-				// Decode the json response
-				$data = json_decode($data, true);
-
-				// Check we don't have an error code
-				if (isset($data['code']) and isset($data['reason']))
-				{
-					// API error - make a note of it and return false
-					error_log('API error: '. $data['code'] .' - '. $data['reason'] .' ('. $url .')!');
-					return false;
-				}
-				// No errors - cache and return the data
-				else
-				{
-					// Check if we are using Memcache
-					if ($this->memcache != false)
-					{
-						// Store the data in Memcache using the URL as the key
-						$this->memcache->set($url, $data, MEMCACHE_COMPRESSED, $this->cachePeriod);
-					}
-
-					// Return the data
-					return $data;
-				}
-			}
-			// CURL error - make a note of it and return false
-			else
-			{
-				error_log('CURL error "'. $errorCode .'" ('. $errorMessage .').');
+				// API error - make a note of it and return false
+				error_log('API error: '. $data['code'] .' - '. $data['reason'] .' ('. $url .')!');
 				return false;
 			}
+			// No errors - cache and return the data
+			else
+			{
+				// Return the data
+				return $data;
+			}
+		}
+		// CURL error - make a note of it and return false
+		else
+		{
+			error_log('CURL error "'. $errorCode .'" ('. $errorMessage .').');
+			return false;
 		}
 	}
 
