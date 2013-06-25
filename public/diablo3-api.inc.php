@@ -4,10 +4,17 @@ class D3 {
 	// Hold the URL parts
 	private $protocol = 'http://';
 	private $server = 'eu';
-	private $host = '.battle.net/';
+	private $host = '.battle.net';
 	private $apiSlug = 'api/d3/';
 	private $mediaSlug = 'd3/static/images/';
 	private $locale = 'en_GB';
+
+	// Hold the API keys
+	public $publicKey;
+	public $privateKey;
+
+	// Do we want to make authenticated requests
+	public $authenticate = false;
 
 	// Hold the built URLs
 	private $apiURL;
@@ -67,8 +74,8 @@ class D3 {
 		}
 
 		// Lets build the main part of the URLs to save us repeating ourselves
-		$this->apiURL = $this->protocol . $this->server . $this->host . $this->apiSlug;
-		$this->mediaURL = $this->protocol . $this->server . $this->host . $this->mediaSlug;
+		$this->apiURL = $this->protocol . $this->server . $this->host . '/' . $this->apiSlug;
+		$this->mediaURL = $this->protocol . $this->server . $this->host . '/' . $this->mediaSlug;
 	}
 
 	/**
@@ -301,6 +308,25 @@ class D3 {
 		// Set the CURL options we need
 		curl_setopt($handle, CURLOPT_URL, $url);
 		curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
+
+		// Are we trying to make an authenticated request, and do we have the required keys
+		if ($this->authenticate === true and $this->publicKey != '' and $this->privateKey !='') {
+			// Set the API endpoint we are requesting
+			$urlPath = str_replace($this->protocol . $this->server . $this->host, '', $url);
+
+			// Current date time (format should be: 'Fri, 10 Jun 2011 21:37:34 <TIMEZONE>')
+			$requestTime = date('D, d M Y G:i:s e', time());
+
+			// Set up the authentication signature
+			$authSignature = base64_encode(hash_hmac('sha1', 'GET'. PHP_EOL . $requestTime . PHP_EOL . $urlPath . PHP_EOL, $this->privateKey, true));
+
+			// Set the HTTP header
+			curl_setopt($handle, CURLOPT_HTTPHEADER, [
+				'Host: '. $this->server . $this->host,
+				'Date: '. $requestTime,
+				PHP_EOL .'Authorization: BNET '. $this->publicKey .":". $authSignature. "\n"
+			]);
+		}
 
 		// Grab the data
 		$data = curl_exec($handle);

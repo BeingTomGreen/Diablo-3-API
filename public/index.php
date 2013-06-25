@@ -1,6 +1,10 @@
 <?php
 
+// Enable full error reporting
 error_reporting(-1);
+
+// Set the timezone, required for Authenticated requests
+date_default_timezone_set('GMT');
 
 // Include the API class
 require_once 'diablo3-api.inc.php';
@@ -14,8 +18,8 @@ $artisanType = 'blacksmith';
 $classType = 'monk';
 $genderType = 'male';
 
-// Specify URL information here
-$args = ['protocol' => 'http://', 'server' => 'eu', 'locale' => 'en_GB'];
+// Optionally specify URL information here
+$args = ['protocol' => 'http://','server' => 'eu', 'locale' => 'en_GB'];
 
 // Create a new instance
 $D3 = new D3 ($args);
@@ -26,12 +30,17 @@ $D3->extraCURLOptions = [
 	CURLOPT_CONNECTTIMEOUT => 5
 ];
 
-// Examples API calls
-//var_dump($D3->getCareer($battleTag));
-//var_dump($D3->getHero($battleTag, $heroID));
-//var_dump($D3->getItem($itemID));
-//var_dump($D3->getFollower($followerType));
-//var_dump($D3->getArtisan($artisanType));
-var_dump($D3->getPaperDoll($classType, $genderType));
+// Optionally set the API Keys
+$D3->publicKey = '';
+$D3->privateKey = '';
 
-?>
+// Optionally enable authentication
+$D3->authenticate = false;
+
+// Examples API calls
+// var_dump($D3->getCareer($battleTag));
+// var_dump($D3->getHero($battleTag, $heroID));
+// var_dump($D3->getItem($itemID));
+// var_dump($D3->getFollower($followerType));
+// var_dump($D3->getArtisan($artisanType));
+var_dump($D3->getPaperDoll($classType, $genderType));

@@ -7,7 +7,8 @@ Their documentation is poor at best, much of what is possible from the API has b
 I may very well create my own Docs repo and stick it on github.io to help others out.
 
 ## TODO
-- Support authenticated API Calls - Same syntax as the [WOW API](https://github.com/Blizzard/api-wow-docs#authentication), need to manually email support and get an application key.
+- Refactor how I build $urlPath in makeCURLCall() to not use str_replace, will probably have to refactor how I build URLs
+- See if the timezone require in the authenticated calls has to be GMT, if not provide means of changing it
 
 ## License
 This is free and unencumbered software released into the public domain. See UNLICENSE for more details.

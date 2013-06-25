@@ -1,6 +1,10 @@
 <?php
 
+// Enable full error reporting
 error_reporting(-1);
+
+// Set the timezone, required for Authenticated requests
+date_default_timezone_set('GMT');
 
 // Include the API class
 require_once 'diablo3-api.inc.php';
