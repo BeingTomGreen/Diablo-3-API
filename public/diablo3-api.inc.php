@@ -20,14 +20,6 @@ class D3 {
 	private $apiURL;
 	private $mediaURL;
 
-	// These hold the various API URLs built by buildAPIURLs()
-	private $careerURL; // <host> "/api/d3/profile/" <battletag-name> "-" <battletag-code> "/"
-	private $heroURL; // <host> "/api/d3/profile/" <battletag-name> "-" <battletag-code> "/hero/" <hero-id>
-	private $itemURL; // <host> "/api/d3/data/item/" <item-data>
-	private $followerURL; // <host> "/api/d3/data/follower/" < follower-type>
-	private $artisanURL; // <host> "/api/d3/data/artisan/" < artisan-type>
-	private $paperDollURL; // <host> "/static/images/profile/hero/paperdoll/" < class-type> "-" < gender-type> ".jpg"
-
 	// These hold the possible protocols, servers & locals
 	private $possibleProtocols = ['http://', 'https://'];
 	private $possibleServers = ['us', 'eu', 'tw', 'kr', 'cn'];
