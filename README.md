@@ -24,6 +24,10 @@ Access detailed Follower information through the Follower Information API.
 
 Access detailed Artisan information through the Follower Information API.
 
+### Paper Doll Image (getPaperDoll())
+
+Returns the URL to the Paper Doll image, for example a [male Monk](http://eu.battle.net/d3/static/images/profile/hero/paperdoll/monk-male.jpg).
+
 ## TODO
 - Refactor how I build $urlPath in makeCURLCall() to not use str_replace, will probably have to refactor how I build URLs
 - See if the timezone require in the authenticated calls has to be GMT, if not provide means of changing it
