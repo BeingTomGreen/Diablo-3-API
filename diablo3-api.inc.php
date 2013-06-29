@@ -1,5 +1,14 @@
 <?php
 
+/**
+	*
+	* @Author Tom Green <tom@beingtomgreen.com>
+	* @link https://bitbucket.org/BeingTomGreen/diablo-3-api
+	* @license UNLICENSE
+	*
+	* A basic PHP wrapper for the integrating the Diablo 3 API into your application.
+	*
+	*/
 class D3 {
 	// Hold the URL parts
 	private $protocol = 'http://';

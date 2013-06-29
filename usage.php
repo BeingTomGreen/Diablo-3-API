@@ -18,7 +18,7 @@ $artisanType = 'blacksmith';
 $classType = 'monk';
 $genderType = 'male';
 
-// Optionally specify URL information here
+// Optionally specify URL information here (these are the default)
 $args = ['protocol' => 'http://','server' => 'eu', 'locale' => 'en_GB'];
 
 // Create a new instance
