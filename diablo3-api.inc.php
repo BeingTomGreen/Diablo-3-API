@@ -289,7 +289,7 @@ class D3 {
 		*
 		* Makes the specified CURL request - this is the meat of the class!
 		*
-		* @param string $url - The URL to for the CURL request
+		* @param string $url - The URL for the CURL request
 		*
 		* @return json/bool - data if we have it, otherwise false
 		*
