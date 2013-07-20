@@ -2,7 +2,7 @@
 
 /**
 	*
-	* @Author Tom Green <tom@beingtomgreen.com>
+	* @author Tom Green <tom@beingtomgreen.com>
 	* @link https://bitbucket.org/BeingTomGreen/diablo-3-api
 	* @license UNLICENSE
 	*
