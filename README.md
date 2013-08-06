@@ -31,6 +31,7 @@ Returns the URL to the Paper Doll image, for example a [male Monk](http://eu.bat
 ### API Limits (as of 6/12/2013 via [XjSv](https://twitter.com/Armando_Tresova))
 
 Unauthenticated API Limit: 30,000
+
 Authenticated API Limit: 300,000
 
 ### TODO
