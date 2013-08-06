@@ -28,6 +28,11 @@ Access detailed Artisan information through the Follower Information API.
 
 Returns the URL to the Paper Doll image, for example a [male Monk](http://eu.battle.net/d3/static/images/profile/hero/paperdoll/monk-male.jpg).
 
+## API Limits (as of 6/12/2013 via [XjSv](https://twitter.com/Armando_Tresova))
+
+Unauthenticated API Limit: 30,000
+Authenticated API Limit: 300,000
+
 ## TODO
 - Refactor how I build $urlPath in makeCURLCall() to not use str_replace, will probably have to refactor how I build URLs
 - See if the timezone require in the authenticated calls has to be GMT, if not provide means of changing it
