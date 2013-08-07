@@ -4,7 +4,7 @@ A basic PHP wrapper for the integrating the Diablo 3 API into your application.
 
 The Diablo 3 API is fairly lacking, especially when compared to the WoW API. [The Blizzard Docs](http://blizzard.github.io/d3-api-docs/) are pretty sparse and much of what is possible within the API has been figured out from the [API Community Forums](http://us.battle.net/d3/en/forum/6916195/), the [WoW Docs](https://github.com/Blizzard/api-wow-docs) & Google.
 
-The code does currently support authenticated calls, however if you enter a set of bogus keys it still returns the correct data. I assume this is just treating the request as if it wasn't authenticated and returning the data anyway, but I have emailed Blizzard for confirmation and will update when I hear back from them!
+While the class does currently support authenticated calls, if you enter a set of bogus keys it still returns the correct data. I assume this is just treating the request as if it wasn't authenticated and returning the data anyway, but I have emailed Blizzard for confirmation and will update when I hear back from them!
 
 ### Currently Supported Methods
 
