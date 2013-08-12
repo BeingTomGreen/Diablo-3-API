@@ -41,5 +41,7 @@ Authenticated API Limit: 300,000
 - See why authenticated calls don't return an error with bogus keys, is there an issue with my code, or does the API treat invalid keys as an un-authed request?
 - Wrap in nice composer package, unit test all of that good shit
 
+
 ### License
-This is free and unencumbered software released into the public domain. See UNLICENSE for more details
+
+This is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
