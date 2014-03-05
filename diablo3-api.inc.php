@@ -6,7 +6,7 @@
 	* @link https://bitbucket.org/BeingTomGreen/diablo-3-api
 	* @license MIT - http://beingtomgreen.mit-license.org/
 	*
-	* A basic PHP wrapper for the integrating the Diablo 3 API into your application.
+	* A basic PHP wrapper for integrating the Diablo 3 API into your application.
 	*
 	*/
 class D3 {
