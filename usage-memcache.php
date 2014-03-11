@@ -30,17 +30,17 @@ $key = 'career-'. $battleTag;
 // Check if we have the data already cached
 if ($memcache->get($key) != false)
 {
-	// We have the data, lets use it
-	$data = $memcache->get($key);
+  // We have the data, lets use it
+  $data = $memcache->get($key);
 }
 // Data not in cache lets grab it
 else
 {
-	// Grab the data
-	$data = $D3->getCareer($battleTag);
+  // Grab the data
+  $data = $D3->getCareer($battleTag);
 
-	// Cache the data for later
-	$memcache->set($key, $data, MEMCACHE_COMPRESSED, $cachePeriod);
+  // Cache the data for later
+  $memcache->set($key, $data, MEMCACHE_COMPRESSED, $cachePeriod);
 }
 
 var_dump($data);

@@ -27,7 +27,7 @@ $D3 = new D3 ($args);
 // Set any extra CURL options here
 // Can be any of the CURL constants defined here: http://php.net/manual/en/function.curl-setopt.php
 $D3->extraCURLOptions = [
-	CURLOPT_CONNECTTIMEOUT => 5
+  CURLOPT_CONNECTTIMEOUT => 5
 ];
 
 // Optionally set the API Keys
