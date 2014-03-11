@@ -22,7 +22,7 @@ class D3 {
   public $publicKey;
   public $privateKey;
 
-  // Do we want to make authenticated requests
+  // Do we want to make authenticated requests?
   public $authenticate = false;
 
   // Hold the built URLs
@@ -45,7 +45,8 @@ class D3 {
   private $heroIDPattern = '/^[\d]+$/';
   private $itemIDPattern = '/^[A-Za-z0-9]+$/';
 
-  // This allows users to add additional CURL options
+  // This allows developers to add additional CURL options
+  // Can be any of the CURL constants defined here - http://php.net/manual/en/function.curl-setopt.php
   public $extraCURLOptions;
 
   /**
@@ -411,4 +412,5 @@ class D3 {
   {
     return preg_match($this->itemIDPattern, $itemID) ? true : false;
   }
+
 }

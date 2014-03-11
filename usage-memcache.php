@@ -3,7 +3,7 @@
 // Enable full error reporting
 error_reporting(-1);
 
-// Set the timezone, required for Authenticated requests
+// Set the timezone (required for authenticated requests)
 date_default_timezone_set('GMT');
 
 // Include the API class
@@ -33,7 +33,7 @@ if ($memcache->get($key) != false)
   // We have the data, lets use it
   $data = $memcache->get($key);
 }
-// Data not in cache lets grab it
+// Data not cached, lets grab it
 else
 {
   // Grab the data
@@ -44,5 +44,3 @@ else
 }
 
 var_dump($data);
-
-?>

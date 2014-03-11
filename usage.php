@@ -3,13 +3,13 @@
 // Enable full error reporting
 error_reporting(-1);
 
-// Set the timezone, required for Authenticated requests
+// Set the timezone, required for authenticated requests
 date_default_timezone_set('GMT');
 
 // Include the API class
 require_once 'diablo3-api.inc.php';
 
-// Set data to be used in the demo
+// Set data to be used in the example
 $battleTag = 'BTG#2577';
 $heroID = '27721760';
 $itemID = 'COGHsoAIEgcIBBXIGEoRHYQRdRUdnWyzFB2qXu51MA04kwNAAFAKYJMD';
@@ -18,10 +18,10 @@ $artisanType = 'blacksmith';
 $classType = 'monk';
 $genderType = 'male';
 
-// Optionally specify URL information here (these are the default)
+// Optionally specify URL information here (these are the default values)
 $args = ['protocol' => 'http://','server' => 'eu', 'locale' => 'en_GB'];
 
-// Create a new instance
+// Initiate our class
 $D3 = new D3 ($args);
 
 // Set any extra CURL options here
